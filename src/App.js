@@ -1,24 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+
+import "semantic-styles";
+
+const words = ["apple", "orange", "banana", "grape"];
 
 function App() {
+  const [searchInput, setSearchInput] = useState("");
+  const [completed, setCompleted] = useState("");
+
+  function autoComplete(value) {
+    if (completed) {
+      setCompleted("");
+      setSearchInput("");
+    } else {
+      setSearchInput(value);
+      const match = words.filter((word) => word.includes(searchInput));
+
+      if (match.length === 1) {
+        setCompleted(match);
+      }
+    }
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="page container padding">
+      <div className="card padding">
+        <h1 className="card-heading">Fruit Search</h1>
+        <input
+          type="text"
+          class="input"
+          value={completed ? completed : searchInput}
+          onChange={(e) => {
+            autoComplete(e.target.value);
+          }}
+        />
+      </div>
     </div>
   );
 }
